@@ -10,6 +10,9 @@ Lazy-Alchemy is an attempt to solve the above mentioned problem. Lazy-Alchemy si
 
 🅛🅐🅩🅨-🅐🅛🅒🅗🅔🅜🅨
 
+
+|pypi| |build| |coverage| |license|
+
 ----
 
 Compatibility
@@ -59,3 +62,23 @@ License
 
 Lazy-Alchemy is released under the MIT License. See the bundled `LICENSE`_ file
 for details.
+
+Credits
+-------
+.. _LICENSE: https://github.com/satyamsoni2211/lazy_alchemy/blob/master/LICENSE
+
+.. |pypi| image:: https://img.shields.io/pypi/v/lazy_alchemy.svg?style=flat-square&label=version
+    :target: https://pypi.org/project/lazy_alchemy/
+    :alt: Latest version released on PyPI
+
+.. |coverage| image::
+    :target:
+    :alt: Test coverage
+
+.. |build| image:: https://github.com/joke2k/faker/workflows/Python%20Tests/badge.svg?branch=master&event=push
+    :target: https://github.com/satyamsoni2211/lazy_alchemy/actions
+    :alt: Build status of the master branch on Mac/Linux
+
+.. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
+    :target: https://github.com/satyamsoni2211/lazy_alchemy/blob/master/LICENSE
+    :alt: Package license
