@@ -6,6 +6,9 @@ class CustomTable(Table):
     def __getattr__(self, attr):
         return getattr(self.c, attr)
 
+    def __bool__(self) -> None:
+        return self is not None
+
 
 class LazyDBProp(object):
     """This descriptor returns sqlalchemy
@@ -17,13 +20,14 @@ class LazyDBProp(object):
         self._table = None
         self._name = None
 
-    def __set_name__(self, owner, name):
+    def __set_name__(self, _, name):
         self._name = name
 
     def __set__(self, instance, value):
-        pass
+        if isinstance(value, (CustomTable, Table)):
+            self._table = value
 
-    def __get__(self, instance, owner):
+    def __get__(self, instance, _):
         if self._table is None:
             self._table = CustomTable(
                 self._name, instance.metadata, autoload=True)

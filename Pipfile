@@ -9,6 +9,7 @@ sqlalchemy = "*"
 [dev-packages]
 pytest = "*"
 autopep8 = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.9"
