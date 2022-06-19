@@ -16,7 +16,7 @@ class User(Base):
 
 def create_table():
     e: engine.Engine = create_engine(
-        "sqlite:///test.db", echo=False, future=True)
+        "sqlite:///test.db", echo=True, future=True)
     with e.begin() as c:
         Base.metadata.create_all(bind=c)
     return e

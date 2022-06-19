@@ -6,3 +6,6 @@
 .pytest
 .coverage
 htmlcov
+build
+lazy_alchemy.egg-info
+dist/
