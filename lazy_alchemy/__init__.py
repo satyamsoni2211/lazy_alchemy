@@ -1,5 +1,10 @@
+from pathlib import Path
+
 from lazy_alchemy.lazy_alchemy import get_lazy_class, CustomTable
 
-__version__ = "0.0.1"
+here = Path(__file__).resolve().parent
+version = (here / "VERSION").read_text(encoding="utf-8")
 
-__all__ = ("get_lazy_class", "CustomTable")
+__version__ = version
+
+__all__ = ("get_lazy_class", "CustomTable", "version")

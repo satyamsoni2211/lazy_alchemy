@@ -2,14 +2,15 @@ from pathlib import Path
 
 from setuptools import setup, find_packages
 
+from lazy_alchemy import version
+
 here = Path(__file__).resolve().parent
 README = (here / "README.md").read_text(encoding="utf-8")
-VERSION = (here / "VERSION").read_text(encoding="utf-8").strip()
 PACKAGE_NAME = "lazy_alchemy"
 
 setup(
     name=PACKAGE_NAME,
-    version="0.0.1",
+    version=version,
     license="MIT",
     packages=find_packages(exclude=["test"]),
     description="Lazy-Alchemy is a Python package that loads the DB models lazily.",

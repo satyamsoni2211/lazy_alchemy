@@ -1,3 +1,4 @@
+.idea
 .venv
 .vscode
 **/__pycache__
@@ -9,3 +10,4 @@ htmlcov
 build
 lazy_alchemy.egg-info
 dist/
+diff
