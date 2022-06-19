@@ -2,9 +2,11 @@
 sqlalchemy==1.4.37
 attrs==21.4.0
 autopep8==1.6.0
+build==0.8.0
 coverage==6.4.1
 iniconfig==1.1.1
 packaging==21.3
+pep517==0.12.0
 pluggy==1.0.0
 py==1.11.0
 pycodestyle==2.8.0

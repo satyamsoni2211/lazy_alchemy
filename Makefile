@@ -3,7 +3,7 @@ REQUIREMENTS_FILE=requirements.txt
 DEV_REQUIREMENTS_FILE=dev_requirements.txt
 
 # setting default to building distribution files
-.DEFAULT_GOAL=setup
+.DEFAULT_GOAL=build
 
 dep:
 	# building requirement files for dev and prd
@@ -13,13 +13,9 @@ dep:
 install: 
 	@pip install -r ${DEV_REQUIREMENTS_FILE}
 
-setup: test
-	@echo "building distribution and wheel files"
+clean:
 	@echo "cleaning stale builds and distributions"
-	@rm -rf dist/ build/ *.egg-info
-	python setup.py sdist bdist_wheel
-
-clean_setup: install setup
+	@rm -rf dist/ build/ *.egg-info htmlcov
 
 test:
 	@pytest
@@ -27,7 +23,14 @@ test:
 cov:
 	coverage run -m pytest && coverage html && open htmlcov/index.html 
 
-pypi: clean_setup
+build: test clean
+	@pip install build
+	@echo "building distribution and wheel files"
+	python setup.py sdist bdist_wheel
+
+clean_build: install setup
+
+pypi: clean_build
 	# building and releasing distribution to pypi
 	# this can be run as is in the pipeline 
 	@pip install twine
