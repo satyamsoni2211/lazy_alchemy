@@ -28,7 +28,7 @@ build: test clean
 	@echo "building distribution and wheel files"
 	python setup.py sdist bdist_wheel
 
-clean_build: install setup
+clean_build: install build
 
 pypi: clean_build
 	# building and releasing distribution to pypi
