@@ -12,8 +12,9 @@ Lazy-Alchemy is an attempt to solve the above mentioned problem. Lazy-Alchemy si
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/lazy_alchemy)
 ![GitHub repo size](https://img.shields.io/github/repo-size/satyamsoni2211/lazy_alchemy)
 ![Codecov](https://img.shields.io/codecov/c/github/satyamsoni2211/lazy_alchemy)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/satyamsoni2211/lazy_alchemy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/satyamsoni2211/lazy_alchemy/alerts/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/satyamsoni2211/lazy_alchemy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/satyamsoni2211/lazy_alchemy/context:python)
+[![CodeFactor](https://www.codefactor.io/repository/github/satyamsoni2211/lazy_alchemy/badge)](https://www.codefactor.io/repository/github/satyamsoni2211/lazy_alchemy)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/satyamsoni2211/lazy_alchemy/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/satyamsoni2211/lazy_alchemy/?branch=master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/satyamsoni2211/lazy_alchemy/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 ----
 
 ### Compatibility
