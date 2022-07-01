@@ -9,6 +9,11 @@ Lazy-Alchemy is an attempt to solve the above mentioned problem. Lazy-Alchemy si
 
 
 [![Pypi tag](https://img.shields.io/pypi/v/lazy_alchemy.svg?style=flat-square&label=version)](https://pypi.org/project/lazy_alchemy/) [![build](https://github.com/joke2k/faker/workflows/Python%20Tests/badge.svg?branch=master&event=push)](https://github.com/satyamsoni2211/lazy_alchemy/actions) [![Licence](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/satyamsoni2211/lazy_alchemy/blob/master/LICENSE)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/lazy_alchemy)
+![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/satyamsoni2211/lazy_alchemy)
+![GitHub repo size](https://img.shields.io/github/repo-size/satyamsoni2211/lazy_alchemy)
+![Codecov](https://img.shields.io/codecov/c/github/satyamsoni2211/lazy_alchemy)
+![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/satyamsoni2211/lazy_alchemy)
 
 ----
 
