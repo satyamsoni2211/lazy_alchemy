@@ -13,8 +13,8 @@ Lazy-Alchemy is an attempt to solve the above mentioned problem. Lazy-Alchemy si
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/satyamsoni2211/lazy_alchemy)
 ![GitHub repo size](https://img.shields.io/github/repo-size/satyamsoni2211/lazy_alchemy)
 ![Codecov](https://img.shields.io/codecov/c/github/satyamsoni2211/lazy_alchemy)
-![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/satyamsoni2211/lazy_alchemy)
-
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/satyamsoni2211/lazy_alchemy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/satyamsoni2211/lazy_alchemy/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/satyamsoni2211/lazy_alchemy.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/satyamsoni2211/lazy_alchemy/context:python)
 ----
 
 ### Compatibility
