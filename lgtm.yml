@@ -1,0 +1,5 @@
+queries:
+- exclude: py/mutable-descriptor
+path_classifiers:
+  test:
+    - tests
