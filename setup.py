@@ -13,6 +13,7 @@ setup(
     version=version,
     license="MIT",
     packages=find_packages(exclude=["test"]),
+    include_package_data=True,
     description="Lazy-Alchemy is a Python package that loads the DB models lazily.",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -24,7 +25,7 @@ setup(
               "orm", "mapper", "performance", "database", "lazy",
               "relational", "classes", "oops", "metaclass"],
     install_requires=[
-        "sqlalchemy",
+        "sqlalchemy <2.0",
     ],
     classifiers=[
         # See https://pypi.org/pypi?%3Aaction=list_classifiers
