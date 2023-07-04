@@ -15,6 +15,7 @@ Lazy-Alchemy is an attempt to solve the above mentioned problem. Lazy-Alchemy si
 [![CodeFactor](https://www.codefactor.io/repository/github/satyamsoni2211/lazy_alchemy/badge)](https://www.codefactor.io/repository/github/satyamsoni2211/lazy_alchemy)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/satyamsoni2211/lazy_alchemy/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/satyamsoni2211/lazy_alchemy/?branch=master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/satyamsoni2211/lazy_alchemy/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![Downloads](https://static.pepy.tech/personalized-badge/lazy-alchemy?period=total&units=abbreviation&left_color=black&right_color=green&left_text=Downloads)](https://pepy.tech/project/lazy-alchemy)
 ----
 
 ### Compatibility
