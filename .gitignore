@@ -10,4 +10,4 @@ htmlcov
 build
 lazy_alchemy.egg-info
 dist/
-diff
+diff.worktrees/
