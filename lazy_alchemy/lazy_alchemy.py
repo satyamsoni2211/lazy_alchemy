@@ -10,29 +10,69 @@ import decimal
 import uuid
 
 # SA to Python type mapping for Pydantic/SQLModel generation
-try:
-    _uuid_type = sqlalchemy.types.Uuid  # SA 2.0.17+
-except AttributeError:
-    _uuid_type = sqlalchemy.types.UUID  # earlier SA 2.x
+# Use _get_type for types that may vary across SA 2.x versions
+
+def _get_type(name, fallback=None):
+    try:
+        return getattr(sqlalchemy.types, name)
+    except AttributeError:
+        return fallback
+
+_uuid_type = _get_type("Uuid") or _get_type("UUID")
+_time_type = _get_type("Time")
+_array_type = _get_type("ARRAY")
+_json_type = _get_type("JSON")
+_jsonb_type = _get_type("JSONB")
+_real_type = _get_type("Real")
+_binary_type = _get_type("Binary") or _get_type("VARBINARY") or _get_type("BLOB") or _get_type("LargeBinary")
+_char_type = _get_type("NCHAR") or _get_type("NVARCHAR") or _get_type("CHAR") or _get_type("VARCHAR")
+_bytelength_type = _get_type("ByteLength")
 
 SA_TO_PYTHON: dict[type, type] = {
+    # Integers
     sqlalchemy.types.Integer: int,
     sqlalchemy.types.BigInteger: int,
     sqlalchemy.types.SmallInteger: int,
+    # Floats
     sqlalchemy.types.Float: float,
     sqlalchemy.types.Numeric: decimal.Decimal,
+    # Strings
     sqlalchemy.types.String: str,
     sqlalchemy.types.Text: str,
     sqlalchemy.types.Unicode: str,
+    sqlalchemy.types.UnicodeText: str,
+    # Booleans
     sqlalchemy.types.Boolean: bool,
+    sqlalchemy.types.Enum: str,
+    # Date/Time
     sqlalchemy.types.Date: datetime.date,
     sqlalchemy.types.DateTime: datetime.datetime,
-    sqlalchemy.types.Time: datetime.time,
+    sqlalchemy.types.TIMESTAMP: datetime.datetime,
     sqlalchemy.types.Interval: datetime.timedelta,
-    sqlalchemy.types.LargeBinary: bytes,
-    sqlalchemy.types.JSON: Any,
-    _uuid_type: uuid.UUID,
+    # Other
+    sqlalchemy.types.NullType: Any,
+    sqlalchemy.types.TypeDecorator: Any,
 }
+
+# Add version-specific types if they exist
+if _uuid_type is not None:
+    SA_TO_PYTHON[_uuid_type] = uuid.UUID
+if _time_type is not None:
+    SA_TO_PYTHON[_time_type] = datetime.time
+if _array_type is not None:
+    SA_TO_PYTHON[_array_type] = list
+if _real_type is not None:
+    SA_TO_PYTHON[_real_type] = float
+if _binary_type is not None:
+    SA_TO_PYTHON[_binary_type] = bytes
+if _char_type is not None:
+    SA_TO_PYTHON[_char_type] = str
+if _bytelength_type is not None:
+    SA_TO_PYTHON[_bytelength_type] = bytes
+if _json_type is not None:
+    SA_TO_PYTHON[_json_type] = Any
+if _jsonb_type is not None:
+    SA_TO_PYTHON[_jsonb_type] = Any
 
 
 def sa_column_to_python_type(column) -> type:
