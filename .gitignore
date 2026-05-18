@@ -10,4 +10,9 @@ htmlcov
 build
 lazy_alchemy.egg-info
 dist/
-diff
+diff.worktrees/
+/test.db
+/test_async.db
+docs
+/enhancement_plan.md
+poetry.lock

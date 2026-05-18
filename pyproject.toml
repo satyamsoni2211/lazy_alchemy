@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lazy-alchemy"
+version = "2.0.0"
+description = "Lazy-load SQLAlchemy table metadata on demand, with full SA2, async, and Pydantic support."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Satyam Soni", email = "satyamsoni@hotmail.co.uk" }]
+dependencies = [
+    "sqlalchemy>=2.0.14,<2.1.0",
+    "pydantic>=2.0,<3.0",
+    "sqlmodel>=0.0.16,<1.0",
+    "greenlet",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7",
+    "pytest-asyncio",
+    "aiosqlite",
+    "mypy",
+    "ruff",
+    "coverage",
+]
+
+[project.urls]
+Homepage = "https://github.com/satyamsoni2211/lazy_alchemy"
+Repository = "https://github.com/satyamsoni2211/lazy_alchemy"
+"Bug Tracker" = "https://github.com/satyamsoni2211/lazy_alchemy/issues"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.hatch.version]
+path = "lazy_alchemy/__init__.py"

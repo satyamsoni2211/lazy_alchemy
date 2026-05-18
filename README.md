@@ -1,65 +1,119 @@
-# 🅛🅐🅩🅨-🅐🅛🅒🅗🅔🅜🅨
+# Lazy-Alchemy
 
-*Lazy-Alchemy* is a Python package that loads the database models lazily. It's a wrapper on top of sqlalchemy, so the Lazy-Alchemy can be used with any framework or project that use sqlalchemy.
+*Lazy-Alchemy* is a Python package that loads database models lazily. It's a wrapper on top of SQLAlchemy, so Lazy-Alchemy can be used with any framework or project that uses SQLAlchemy.
 
-Sqlalchemy loads the entire metadata of all models during the application startup, thus increases the app start up time significantly. In projects where there are 100s of database models, the start up time can be in minutes due to loading of models metadata.
+SQLAlchemy loads the entire metadata of all models during application startup, which can significantly increase start-up time. In projects with 100s of database models, startup time can be in minutes due to loading model metadata.
 
-Lazy-Alchemy is an attempt to solve the above mentioned problem. Lazy-Alchemy significantly boosts the start up time from minutes to seconds. It also saves memory by only loading the models "on-demand", and not loading every model.
+Lazy-Alchemy solves this by only loading models "on-demand", boosting startup time from minutes to seconds and saving memory.
 
-
-
-[![Pypi tag](https://img.shields.io/pypi/v/lazy_alchemy.svg?style=flat-square&label=version)](https://pypi.org/project/lazy_alchemy/) [![build](https://github.com/joke2k/faker/workflows/Python%20Tests/badge.svg?branch=master&event=push)](https://github.com/satyamsoni2211/lazy_alchemy/actions) [![Licence](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/satyamsoni2211/lazy_alchemy/blob/master/LICENSE)
+[![Pypi tag](https://img.shields.io/pypi/v/lazy_alchemy.svg?style=flat-square&label=version)](https://pypi.org/project/lazy_alchemy/)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/lazy_alchemy)
-![GitHub repo size](https://img.shields.io/github/repo-size/satyamsoni2211/lazy_alchemy)
-![Codecov](https://img.shields.io/codecov/c/github/satyamsoni2211/lazy_alchemy)
-[![CodeFactor](https://www.codefactor.io/repository/github/satyamsoni2211/lazy_alchemy/badge)](https://www.codefactor.io/repository/github/satyamsoni2211/lazy_alchemy)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/satyamsoni2211/lazy_alchemy/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/satyamsoni2211/lazy_alchemy/?branch=master)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/satyamsoni2211/lazy_alchemy/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
-[![Downloads](https://static.pepy.tech/personalized-badge/lazy-alchemy?period=total&units=abbreviation&left_color=black&right_color=green&left_text=Downloads)](https://pepy.tech/project/lazy-alchemy)
-----
+![Licence](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
 
-### Compatibility
+---
 
+## Compatibility
 
-This package is compatible with Python >= 3.6
+- Python >= 3.10
+- SQLAlchemy 1.4 / 2.x
 
-### Basic Usage
-
-
-Install with pip:
+## Installation
 
 ```bash
-    pip install lazy-alchemy
+pip install lazy-alchemy            # Includes async, Pydantic v2, SQLModel
+pip install lazy-alchemy[dev]       # Dev dependencies + tests
 ```
 
+## Basic Usage
 
 ```python
-    from lazy_alchemy import get_lazy_class
-    from sqlalchemy import create_engine
+from lazy_alchemy import get_lazy_class
+from sqlalchemy import create_engine
 
-    db_engine = create_engine(DB_CONNECT_STRING)
-    lazy_db = get_lazy_class(db_engine)
+db_engine = create_engine(DB_CONNECT_STRING)
+lazy_db = get_lazy_class(db_engine)
+
+# Access table on first use (lazy reflection)
+db_model = lazy_db.my_table
 ```
+
+### Async Usage
 
 ```python
-    # SqlAlchemy DB Queries
-    db_model = lazy_db.my_db_table_foo
+from sqlalchemy.ext.asyncio import create_async_engine
+from lazy_alchemy import get_lazy_class
 
-    query = session.query(db_model).filter(db_model.foo == "bar").all()
+async_engine = create_async_engine(DB_CONNECT_STRING)
+lazy_db = get_lazy_class(async_engine)
+
+# In async context:
+users_table = await lazy_db.get("users")
 ```
 
-Tests
------
+### Pydantic v2 Models
 
-Run tests:
+```python
+lazy_db = get_lazy_class(engine)
+
+# Generate Pydantic model from reflected table
+UserSchema = lazy_db.users.as_pydantic()
+user = UserSchema(username="alice", age=30)
+
+# For PATCH endpoints (all fields Optional)
+UserPatch = lazy_db.users.as_pydantic_partial()
+```
+
+### SQLModel Integration
+
+```python
+lazy_db = get_lazy_class(engine)
+
+# Generate SQLModel class
+User = lazy_db.users.as_sqlmodel()
+
+# Use with FastAPI
+@app.get("/users/{user_id}", response_model=User)
+def get_user(user_id: int, session: Session = Depends(get_session)):
+    return session.get(User, user_id)
+```
+
+### Cache Management
+
+```python
+lazy_db = get_lazy_class(engine, cache_ttl=300)  # 5 min TTL
+
+# Preload tables at startup
+lazy_db.preload("users", "orders")
+
+# Invalidate specific table
+lazy_db.invalidate("users")
+
+# Clear all cached tables
+lazy_db.invalidate_all()
+
+# List available tables
+tables = lazy_db.list_tables()
+```
+
+### Exceptions
+
+```python
+from lazy_alchemy import TableNotFoundError, LazyAlchemyError
+
+try:
+    table = lazy_db.nonexistent_table
+except TableNotFoundError as e:
+    print(e)  # Helpful message with available tables
+```
+
+## Tests
 
 ```bash
-    pytest
+pytest
 ```
 
+---
 
-License
--------
+## License
 
-Lazy-Alchemy is released under the MIT License. See the bundled [`LICENSE`](https://github.com/satyamsoni2211/lazy_alchemy/blob/master/LICENSE) file
-for details.
+Lazy-Alchemy is released under the MIT License. See the bundled `LICENSE` file for details.
