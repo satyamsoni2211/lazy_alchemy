@@ -10,7 +10,7 @@ import decimal
 import uuid
 
 # SA to Python type mapping for Pydantic/SQLModel generation
-# Use _get_type for types that may vary across SA 2.x versions
+# Covers all SQLAlchemy 2.0 sqltypes
 
 def _get_type(name, fallback=None):
     try:
@@ -18,79 +18,131 @@ def _get_type(name, fallback=None):
     except AttributeError:
         return fallback
 
+# Integers
+_sa_int = sqlalchemy.types.Integer
+_sa_bigint = sqlalchemy.types.BigInteger
+_sa_smallint = sqlalchemy.types.SmallInteger
+_sa_int_ = _get_type("INT")
+_sa_integer_ = _get_type("INTEGER")
+
+# Floats/Numeric
+_sa_float = sqlalchemy.types.Float
+_sa_numeric = sqlalchemy.types.Numeric
+_sa_decimal = _get_type("DECIMAL")
+_sa_double = _get_type("Double") or _get_type("DOUBLE")
+_sa_real = _get_type("REAL")
+_sa_double_precision = _get_type("DOUBLE_PRECISION")
+
+# Strings
+_sa_string = sqlalchemy.types.String
+_sa_text = sqlalchemy.types.Text
+_sa_unicode = sqlalchemy.types.Unicode
+_sa_unicodetext = sqlalchemy.types.UnicodeText
+_sa_char = _get_type("CHAR")
+_sa_varchar = _get_type("VARCHAR")
+_sa_nchar = _get_type("NCHAR")
+_sa_nvarchar = _get_type("NVARCHAR")
+_sa_clob = _get_type("CLOB")
+
+# Booleans
+_sa_boolean = sqlalchemy.types.Boolean
+
+# Date/Time
+_sa_date = sqlalchemy.types.Date
+_sa_datetime = sqlalchemy.types.DateTime
+_sa_time = _get_type("Time")
+_sa_timestamp = _get_type("TIMESTAMP")
+_sa_interval = sqlalchemy.types.Interval
+
+# Binary
+_sa_binary = _get_type("BINARY")
+_sa_varbinary = _get_type("VARBINARY")
+_sa_blob = _get_type("BLOB")
+_sa_largebinary = sqlalchemy.types.LargeBinary
+
+# JSON
+_sa_json = _get_type("JSON")
+
+# UUID
 _uuid_type = _get_type("Uuid") or _get_type("UUID")
-_time_type = _get_type("Time")
+
+# ARRAY
 _array_type = _get_type("ARRAY")
-_json_type = _get_type("JSON")
-_jsonb_type = _get_type("JSONB")
-_real_type = _get_type("Real")
-_binary_type = _get_type("Binary")
-_varbinary_type = _get_type("VARBINARY")
-_blob_type = _get_type("BLOB")
-_largebinary_type = _get_type("LargeBinary")
-_nchar_type = _get_type("NCHAR")
-_nvarchar_type = _get_type("NVARCHAR")
-_char_type = _get_type("CHAR")
-_varchar_type = _get_type("VARCHAR")
-_bytelength_type = _get_type("ByteLength")
+
+# Enum
+_sa_enum = sqlalchemy.types.Enum
+
+# Other
+_sa_nulltype = sqlalchemy.types.NullType
+_sa_typedecorator = sqlalchemy.types.TypeDecorator
 
 SA_TO_PYTHON: dict[type, type] = {
     # Integers
-    sqlalchemy.types.Integer: int,
-    sqlalchemy.types.BigInteger: int,
-    sqlalchemy.types.SmallInteger: int,
+    _sa_int: int,
+    _sa_bigint: int,
+    _sa_smallint: int,
     # Floats
-    sqlalchemy.types.Float: float,
-    sqlalchemy.types.Numeric: decimal.Decimal,
+    _sa_float: float,
+    _sa_numeric: decimal.Decimal,
     # Strings
-    sqlalchemy.types.String: str,
-    sqlalchemy.types.Text: str,
-    sqlalchemy.types.Unicode: str,
-    sqlalchemy.types.UnicodeText: str,
+    _sa_string: str,
+    _sa_text: str,
+    _sa_unicode: str,
+    _sa_unicodetext: str,
     # Booleans
-    sqlalchemy.types.Boolean: bool,
-    sqlalchemy.types.Enum: str,
+    _sa_boolean: bool,
     # Date/Time
-    sqlalchemy.types.Date: datetime.date,
-    sqlalchemy.types.DateTime: datetime.datetime,
-    sqlalchemy.types.TIMESTAMP: datetime.datetime,
-    sqlalchemy.types.Interval: datetime.timedelta,
+    _sa_date: datetime.date,
+    _sa_datetime: datetime.datetime,
+    _sa_interval: datetime.timedelta,
     # Other
-    sqlalchemy.types.NullType: Any,
-    sqlalchemy.types.TypeDecorator: Any,
+    _sa_nulltype: Any,
+    _sa_typedecorator: Any,
 }
 
-# Add version-specific types if they exist
+# Add all version-specific types if they exist
+if _sa_int_ is not None:
+    SA_TO_PYTHON[_sa_int_] = int
+if _sa_integer_ is not None:
+    SA_TO_PYTHON[_sa_integer_] = int
+if _sa_decimal is not None:
+    SA_TO_PYTHON[_sa_decimal] = decimal.Decimal
+if _sa_double is not None:
+    SA_TO_PYTHON[_sa_double] = float
+if _sa_real is not None:
+    SA_TO_PYTHON[_sa_real] = float
+if _sa_double_precision is not None:
+    SA_TO_PYTHON[_sa_double_precision] = float
+if _sa_char is not None:
+    SA_TO_PYTHON[_sa_char] = str
+if _sa_varchar is not None:
+    SA_TO_PYTHON[_sa_varchar] = str
+if _sa_nchar is not None:
+    SA_TO_PYTHON[_sa_nchar] = str
+if _sa_nvarchar is not None:
+    SA_TO_PYTHON[_sa_nvarchar] = str
+if _sa_clob is not None:
+    SA_TO_PYTHON[_sa_clob] = str
+if _sa_time is not None:
+    SA_TO_PYTHON[_sa_time] = datetime.time
+if _sa_timestamp is not None:
+    SA_TO_PYTHON[_sa_timestamp] = datetime.datetime
+if _sa_binary is not None:
+    SA_TO_PYTHON[_sa_binary] = bytes
+if _sa_varbinary is not None:
+    SA_TO_PYTHON[_sa_varbinary] = bytes
+if _sa_blob is not None:
+    SA_TO_PYTHON[_sa_blob] = bytes
+if _sa_largebinary is not None:
+    SA_TO_PYTHON[_sa_largebinary] = bytes
+if _sa_json is not None:
+    SA_TO_PYTHON[_sa_json] = Any
 if _uuid_type is not None:
     SA_TO_PYTHON[_uuid_type] = uuid.UUID
-if _time_type is not None:
-    SA_TO_PYTHON[_time_type] = datetime.time
 if _array_type is not None:
     SA_TO_PYTHON[_array_type] = list
-if _real_type is not None:
-    SA_TO_PYTHON[_real_type] = float
-if _binary_type is not None:
-    SA_TO_PYTHON[_binary_type] = bytes
-if _varbinary_type is not None:
-    SA_TO_PYTHON[_varbinary_type] = bytes
-if _blob_type is not None:
-    SA_TO_PYTHON[_blob_type] = bytes
-if _largebinary_type is not None:
-    SA_TO_PYTHON[_largebinary_type] = bytes
-if _nchar_type is not None:
-    SA_TO_PYTHON[_nchar_type] = str
-if _nvarchar_type is not None:
-    SA_TO_PYTHON[_nvarchar_type] = str
-if _char_type is not None:
-    SA_TO_PYTHON[_char_type] = str
-if _varchar_type is not None:
-    SA_TO_PYTHON[_varchar_type] = str
-if _bytelength_type is not None:
-    SA_TO_PYTHON[_bytelength_type] = bytes
-if _json_type is not None:
-    SA_TO_PYTHON[_json_type] = Any
-if _jsonb_type is not None:
-    SA_TO_PYTHON[_jsonb_type] = Any
+if _sa_enum is not None:
+    SA_TO_PYTHON[_sa_enum] = str
 
 
 def sa_column_to_python_type(column) -> type:
