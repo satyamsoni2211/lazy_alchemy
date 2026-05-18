@@ -1,0 +1,19 @@
+build:
+  nodes:
+    coverage:
+      project:
+        python: "3.11"
+      tests:
+        override:
+          - command: pip install -e ".[dev]" && pytest tests/ -q --cov=lazy_alchemy --cov-report=xml
+            coverage:
+              formatted: true
+              url: https://codecov.io
+    python-lava:
+      steps:
+        - setup:
+            python: "3.11"
+        - before-script:
+            - pip install ruff
+        - script:
+            - ruff check lazy_alchemy
