@@ -127,16 +127,8 @@ class CustomTable(Table):
     def as_sqlmodel(self):
         """
         Generate a SQLModel class from reflected schema.
-
-        Requires: pip install lazy-alchemy[sqlmodel]
         """
-        try:
-            from sqlmodel import SQLModel, Field
-        except ImportError:
-            raise ImportError(
-                "sqlmodel is required for as_sqlmodel(). "
-                "Install it with: pip install lazy-alchemy[sqlmodel]"
-            )
+        from sqlmodel import SQLModel, Field
 
         fields = {}
         annotations = {}
