@@ -11,9 +11,9 @@ license = { text = "MIT" }
 requires-python = ">=3.10"
 authors = [{ name = "Satyam Soni", email = "satyamsoni@hotmail.co.uk" }]
 dependencies = [
-    "sqlalchemy>=1.4",
-    "pydantic>=2.0",
-    "sqlmodel>=0.0.14",
+    "sqlalchemy>=2.0,<3.0",
+    "pydantic>=2.0,<3.0",
+    "sqlmodel>=0.0.16,<1.0",
     "greenlet",
 ]
 
@@ -25,7 +25,6 @@ dev = [
     "mypy",
     "ruff",
     "coverage",
-    "sqlalchemy[asyncio]>=2.0",
 ]
 
 [project.urls]

@@ -9,17 +9,7 @@ import datetime
 import decimal
 import uuid
 
-SA2 = int(sqlalchemy.__version__.split(".")[0]) >= 2
-
 # SA to Python type mapping for Pydantic/SQLModel generation
-try:
-    _UUID_TYPE = sqlalchemy.types.Uuid  # SA2
-except AttributeError:
-    try:
-        _UUID_TYPE = sqlalchemy.types.UUID  # SA1
-    except AttributeError:
-        _UUID_TYPE = None
-
 SA_TO_PYTHON: dict[type, type] = {
     sqlalchemy.types.Integer: int,
     sqlalchemy.types.BigInteger: int,
@@ -36,9 +26,8 @@ SA_TO_PYTHON: dict[type, type] = {
     sqlalchemy.types.Interval: datetime.timedelta,
     sqlalchemy.types.LargeBinary: bytes,
     sqlalchemy.types.JSON: Any,
+    sqlalchemy.types.Uuid: uuid.UUID,
 }
-if _UUID_TYPE is not None:
-    SA_TO_PYTHON[_UUID_TYPE] = uuid.UUID
 
 
 def sa_column_to_python_type(column) -> type:
@@ -182,20 +171,12 @@ class LazyDBProp(object):
                 f"Available tables: {', '.join(sorted(available))}"
             )
 
-        if SA2:
-            with instance.engine.connect() as conn:
-                return CustomTable(
-                    self._name,
-                    instance.metadata,
-                    schema=instance.schema,
-                    autoload_with=conn,
-                )
-        else:
+        with instance.engine.connect() as conn:
             return CustomTable(
                 self._name,
                 instance.metadata,
                 schema=instance.schema,
-                autoload=True,
+                autoload_with=conn,
             )
 
     def __get__(self, instance, _):
