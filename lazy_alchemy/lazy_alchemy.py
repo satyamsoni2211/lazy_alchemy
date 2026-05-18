@@ -4,7 +4,6 @@ from typing import Any, Optional
 
 import sqlalchemy
 from sqlalchemy import Table, MetaData, inspect as sa_inspect
-from sqlalchemy.engine import Engine
 from sqlalchemy.ext.asyncio import AsyncEngine
 import datetime
 import decimal
@@ -104,7 +103,7 @@ class CustomTable(Table):
         Returns:
             A dynamically created Pydantic BaseModel subclass.
         """
-        from pydantic import BaseModel, create_model
+        from pydantic import create_model
 
         fields = {}
         for col in self.columns:
