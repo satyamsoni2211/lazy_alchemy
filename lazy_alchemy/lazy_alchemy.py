@@ -13,6 +13,14 @@ import uuid
 SA2 = int(sqlalchemy.__version__.split(".")[0]) >= 2
 
 # SA to Python type mapping for Pydantic/SQLModel generation
+try:
+    _UUID_TYPE = sqlalchemy.types.Uuid  # SA2
+except AttributeError:
+    try:
+        _UUID_TYPE = sqlalchemy.types.UUID  # SA1
+    except AttributeError:
+        _UUID_TYPE = None
+
 SA_TO_PYTHON: dict[type, type] = {
     sqlalchemy.types.Integer: int,
     sqlalchemy.types.BigInteger: int,
@@ -29,8 +37,9 @@ SA_TO_PYTHON: dict[type, type] = {
     sqlalchemy.types.Interval: datetime.timedelta,
     sqlalchemy.types.LargeBinary: bytes,
     sqlalchemy.types.JSON: Any,
-    sqlalchemy.types.UUID: uuid.UUID,
 }
+if _UUID_TYPE is not None:
+    SA_TO_PYTHON[_UUID_TYPE] = uuid.UUID
 
 
 def sa_column_to_python_type(column) -> type:

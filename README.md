@@ -20,11 +20,8 @@ Lazy-Alchemy solves this by only loading models "on-demand", boosting startup ti
 ## Installation
 
 ```bash
-pip install lazy-alchemy              # base (SA 1.4/2.x compatible)
-pip install lazy-alchemy[async]      # async engine support
-pip install lazy-alchemy[pydantic]   # Pydantic v2 model generation
-pip install lazy-alchemy[sqlmodel]   # SQLModel integration
-pip install lazy-alchemy[dev]        # all extras + dev tools
+pip install lazy-alchemy            # Includes async, Pydantic v2, SQLModel
+pip install lazy-alchemy[dev]       # Dev dependencies + tests
 ```
 
 ## Basic Usage
