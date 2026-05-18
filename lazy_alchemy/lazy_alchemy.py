@@ -24,8 +24,14 @@ _array_type = _get_type("ARRAY")
 _json_type = _get_type("JSON")
 _jsonb_type = _get_type("JSONB")
 _real_type = _get_type("Real")
-_binary_type = _get_type("Binary") or _get_type("VARBINARY") or _get_type("BLOB") or _get_type("LargeBinary")
-_char_type = _get_type("NCHAR") or _get_type("NVARCHAR") or _get_type("CHAR") or _get_type("VARCHAR")
+_binary_type = _get_type("Binary")
+_varbinary_type = _get_type("VARBINARY")
+_blob_type = _get_type("BLOB")
+_largebinary_type = _get_type("LargeBinary")
+_nchar_type = _get_type("NCHAR")
+_nvarchar_type = _get_type("NVARCHAR")
+_char_type = _get_type("CHAR")
+_varchar_type = _get_type("VARCHAR")
 _bytelength_type = _get_type("ByteLength")
 
 SA_TO_PYTHON: dict[type, type] = {
@@ -65,8 +71,20 @@ if _real_type is not None:
     SA_TO_PYTHON[_real_type] = float
 if _binary_type is not None:
     SA_TO_PYTHON[_binary_type] = bytes
+if _varbinary_type is not None:
+    SA_TO_PYTHON[_varbinary_type] = bytes
+if _blob_type is not None:
+    SA_TO_PYTHON[_blob_type] = bytes
+if _largebinary_type is not None:
+    SA_TO_PYTHON[_largebinary_type] = bytes
+if _nchar_type is not None:
+    SA_TO_PYTHON[_nchar_type] = str
+if _nvarchar_type is not None:
+    SA_TO_PYTHON[_nvarchar_type] = str
 if _char_type is not None:
     SA_TO_PYTHON[_char_type] = str
+if _varchar_type is not None:
+    SA_TO_PYTHON[_varchar_type] = str
 if _bytelength_type is not None:
     SA_TO_PYTHON[_bytelength_type] = bytes
 if _json_type is not None:
