@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import NoSuchTableError
 from unittest import TestCase
 from .seed_db import create_table
-from lazy_alchemy import get_lazy_class, CustomTable
+from lazy_alchemy import get_lazy_class, CustomTable, TableNotFoundError
 
 
 class TestLazyOrmSuite(TestCase):
@@ -31,12 +31,14 @@ class TestLazyOrmSuite(TestCase):
         insert_statement = user.insert().values(username="fake_user", age=21)
         self.session.execute(insert_statement)
         self.session.commit()
-        obj = self.session.query(user).first()
+        from sqlalchemy import select
+        result = self.session.execute(select(user).where(user.c.username == "fake_user"))
+        obj = result.first()
         self.assertEqual(obj.username, "fake_user")
         self.assertEqual(obj.age, 21)
 
     def test_invalid_table_and_column(self):
-        with pytest.raises(NoSuchTableError):
+        with pytest.raises(TableNotFoundError):
             self.lazy_class.foo_bar
         with pytest.raises(AttributeError):
             self.lazy_class.user.abc
