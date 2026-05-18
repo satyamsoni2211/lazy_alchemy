@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Engine, MetaData
+from sqlalchemy import Table, Engine
 from sqlalchemy.ext.asyncio import AsyncEngine
 from typing import overload, Any
 
