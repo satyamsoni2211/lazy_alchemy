@@ -25,7 +25,7 @@ setup(
               "orm", "mapper", "performance", "database", "lazy",
               "relational", "classes", "oops", "metaclass"],
     install_requires=[
-        "sqlalchemy>=2.0,<3.0",
+        "sqlalchemy>=2.0.14,<2.1.0",
         "pydantic>=2.0,<3.0",
         "sqlmodel>=0.0.16,<1.0",
         "greenlet",
