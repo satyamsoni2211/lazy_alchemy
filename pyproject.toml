@@ -16,6 +16,25 @@ dependencies = [
     "sqlmodel>=0.0.16,<1.0",
     "greenlet",
 ]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Database",
+    "Topic :: Database :: Front-Ends",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: MIT License",
+]
 
 [project.optional-dependencies]
 dev = [
@@ -31,33 +50,6 @@ dev = [
 Homepage = "https://github.com/satyamsoni2211/lazy_alchemy"
 Repository = "https://github.com/satyamsoni2211/lazy_alchemy"
 "Bug Tracker" = "https://github.com/satyamsoni2211/lazy_alchemy/issues"
-
-[project.classifiers]
-status = "Development Status :: 5 - Production/Stable"
-environment = "Environment :: Console"
-audience = [
-    "Intended Audience :: Developers",
-    "Intended Audience :: Science/Research",
-]
-language = [
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-]
-implementation = [
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
-]
-topic = [
-    "Topic :: Database",
-    "Topic :: Database :: Front-Ends",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Utilities",
-]
-license = "License :: OSI Approved :: MIT License"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
