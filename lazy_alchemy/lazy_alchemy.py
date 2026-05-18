@@ -10,6 +10,11 @@ import decimal
 import uuid
 
 # SA to Python type mapping for Pydantic/SQLModel generation
+try:
+    _uuid_type = sqlalchemy.types.Uuid  # SA 2.0.17+
+except AttributeError:
+    _uuid_type = sqlalchemy.types.UUID  # earlier SA 2.x
+
 SA_TO_PYTHON: dict[type, type] = {
     sqlalchemy.types.Integer: int,
     sqlalchemy.types.BigInteger: int,
@@ -26,7 +31,7 @@ SA_TO_PYTHON: dict[type, type] = {
     sqlalchemy.types.Interval: datetime.timedelta,
     sqlalchemy.types.LargeBinary: bytes,
     sqlalchemy.types.JSON: Any,
-    sqlalchemy.types.Uuid: uuid.UUID,
+    _uuid_type: uuid.UUID,
 }
 
 
