@@ -24,6 +24,7 @@ dev = [
     "aiosqlite",
     "mypy",
     "ruff",
+    "coverage",
     "sqlalchemy[asyncio]>=2.0",
 ]
 
