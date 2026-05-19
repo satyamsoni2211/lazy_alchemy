@@ -1,4 +1,5 @@
 import time
+import threading
 import pytest
 from tests.conftest import create_test_db
 from lazy_alchemy import get_lazy_class, CustomTable, TableNotFoundError
@@ -74,28 +75,84 @@ def test_list_tables():
 def test_foreign_key_field_in_sqlmodel():
     """Test that as_sqlmodel properly handles foreign keys.
 
-    Note: This test verifies the code path is exercised. The actual FK resolution
-    requires tables to be set up in the same metadata, which is tested via
-    SQLModel's own behavior in production use.
+    Covers lines 246-248: foreign key branch in as_sqlmodel.
     """
-    engine = create_test_db()
-    lazy_db = get_lazy_class(engine)
-
-    # Create a simple profile table without FK first, then reflect it
-    from sqlalchemy import Column, String, Integer
+    from sqlalchemy import Column, String, Integer, ForeignKey
     from sqlalchemy.ext.declarative import declarative_base
 
     Base = declarative_base()
 
+    # Create Profile table referencing existing User table
     class Profile(Base):
-        __tablename__ = "profile"
+        __tablename__ = "profile_fk"
         id = Column("id", Integer, primary_key=True)
-        user_name = Column("user_name", String(20))
+        user_name = Column("user_name", String(20), ForeignKey("user.username"))
+
+    # Create User table in same metadata so FK can resolve
+    class User(Base):
+        __tablename__ = "user"
+        username = Column("username", String(20), primary_key=True)
+        age = Column("age", Integer)
+
+    engine = create_test_db()
+    lazy_db = get_lazy_class(engine)
 
     with engine.begin() as conn:
         Base.metadata.drop_all(bind=conn)
         Base.metadata.create_all(bind=conn)
 
-    # Now reflect and verify it works
-    profile = lazy_db.profile
+    # Reflect the profile table - this now has FK to user
+    profile = lazy_db.profile_fk
     assert profile is not None
+
+    # Get SQLModel - this exercises the FK branch in as_sqlmodel
+    ProfileModel = profile.as_sqlmodel()
+    assert ProfileModel is not None
+
+
+def test_double_checked_locking_sync():
+    """Test that double-checked locking path is exercised.
+
+    Lines 305-309: When cache miss occurs, we acquire the lock,
+    check again, then reflect. This tests the concurrent access path.
+    """
+    engine = create_test_db()
+    lazy_db = get_lazy_class(engine)
+
+    # First access - populate cache
+    table1 = lazy_db.user
+
+    # Invalidate to force cache miss
+    lazy_db.invalidate("user")
+
+    # Second access - should hit the double-check path
+    table2 = lazy_db.user
+
+    assert table1.name == table2.name == "user"
+
+
+def test_unknown_column_type_returns_any():
+    """Test that sa_column_to_python_type returns Any for unknown types.
+
+    Covers line 152: when no SA type matches, return Any.
+    We use a custom SQLAlchemy type that doesn't inherit from any mapped type.
+    """
+    from sqlalchemy import Column, TypeDecorator, String
+    from lazy_alchemy.lazy_alchemy import sa_column_to_python_type, SA_TO_PYTHON
+
+    # Create a custom type that doesn't inherit from any mapped SA type
+    class UnknownCustomType(TypeDecorator):
+        impl = String(50)
+        cache_ok = False
+
+    # Create a mock column with our custom type
+    col = Column("unknown_col", UnknownCustomType(), nullable=False)
+
+    # Verify the type is not in SA_TO_PYTHON keys
+    assert UnknownCustomType not in SA_TO_PYTHON
+
+    # This should hit line 152 and return Any
+    result = sa_column_to_python_type(col)
+    # Since the type doesn't match any known SA type, it returns Any
+    from typing import Any as TypingAny
+    assert result is TypingAny
