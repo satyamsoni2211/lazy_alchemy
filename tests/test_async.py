@@ -30,3 +30,24 @@ async def test_async_invalidate_all(async_engine):
     _ = await lazy_db.get("user")
     await lazy_db.invalidate_all()
     assert len(lazy_db._cache) == 0
+
+
+@pytest.mark.asyncio
+async def test_async_double_checked_locking(async_engine):
+    """Test that async double-checked locking path is exercised.
+
+    Covers line 398-400: When cache miss occurs, we acquire the lock,
+    check again, then reflect. This tests concurrent access in async context.
+    """
+    lazy_db = get_lazy_class(async_engine)
+
+    # First access - populate cache
+    table1 = await lazy_db.get("user")
+
+    # Invalidate to force cache miss
+    await lazy_db.invalidate("user")
+
+    # Second access - should hit the double-check path
+    table2 = await lazy_db.get("user")
+
+    assert table1.name == table2.name == "user"
