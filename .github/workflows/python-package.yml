@@ -37,8 +37,8 @@ jobs:
       run: ruff check lazy_alchemy
     - name: coverage
       run: coverage run -m pytest && coverage html
-    - name: upload_to_codecov
-      run: |
-        curl -Os https://uploader.codecov.io/latest/linux/codecov
-        chmod +x codecov
-        ./codecov
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
