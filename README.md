@@ -127,6 +127,9 @@ lazy_db = get_lazy_class(engine)
 
 # In any async context:
 orders = await lazy_db.get("orders")
+
+# Async tables also support schema generation
+Order = orders.as_sqlmodel()
 ```
 
 ### Pydantic v2 schema generation
