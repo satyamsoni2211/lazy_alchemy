@@ -17,3 +17,4 @@ docs
 /enhancement_plan.md
 poetry.lock
 .claude
+/test_debug.db

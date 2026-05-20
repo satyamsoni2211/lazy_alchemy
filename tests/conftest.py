@@ -1,5 +1,5 @@
 import pytest
-from sqlalchemy import create_engine, Column, String, Integer, Index
+from sqlalchemy import create_engine, Column, String, Integer, Index, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.asyncio import create_async_engine
 
@@ -11,6 +11,14 @@ class User(Base):
     username = Column("username", String(20), primary_key=True)
     age = Column("age", Integer)
     __table_args__ = (Index("idx_user_username", "username"),)
+
+
+class Address(Base):
+    __tablename__ = "address"
+    id = Column("id", Integer, primary_key=True)
+    user_username = Column("user_username", String(20), ForeignKey("user.username"))
+    city = Column("city", String(50))
+    __table_args__ = (Index("idx_address_user", "user_username"),)
 
 
 @pytest.fixture
