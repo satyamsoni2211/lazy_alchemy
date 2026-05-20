@@ -401,7 +401,7 @@ class AsyncLazyDBAccessor:
 
             async with self._engine.connect() as conn:
                 table = await conn.run_sync(
-                    lambda sync_conn: Table(
+                    lambda sync_conn: CustomTable(
                         table_name,
                         self._metadata,
                         schema=self._schema,
